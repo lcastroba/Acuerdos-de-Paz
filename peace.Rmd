@@ -1,0 +1,99 @@
+---
+title: "Peace Agreement"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(readxl)
+dataset_limpio <- read_excel("Pec 2/dataset limpio.xlsx", 
+    col_types = c("text", "text", "numeric", 
+        "text", "text", "numeric", "text", 
+        "date", "text", "numeric", "numeric", 
+        "text", "text", "text", "text", "text", 
+        "text", "text", "text", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric", "numeric", 
+        "numeric", "numeric"))
+
+
+
+dataset_limpio$Country <- as.factor(dataset_limpio$Country)
+dataset_limpio$'Conflict Nature' <-  as.factor(dataset_limpio$'Conflict Nature')
+dataset_limpio$'Peace process Number' <-  as.factor(dataset_limpio$'Peace process Number')
+dataset_limpio$'Region' <-  as.factor(dataset_limpio$'Region')
+dataset_limpio$'Status' <-  as.factor(dataset_limpio$'Status')
+#dataset_limpio$'Agreement length' <-  as.factor(dataset_limpio$'Agreement #length')
+dataset_limpio$'Agreement stage' <-  as.factor(dataset_limpio$'Agreement stage')
+levels(dataset_limpio$'Agreement stage') <- c('Ceasefire','Implementation/renegotiation','Pre-negotiation','Renewal','Comprehensive','Partial')
+dataset_limpio$'Parties' <-  as.factor(dataset_limpio$'Parties')
+dataset_limpio$'Third Parties' <-  as.factor(dataset_limpio$'Third Parties')
+dataset_limpio$'Parties' <-  as.factor(dataset_limpio$'Parties')
+library(countrycode) 
+dataset_limpio$'Location 1' <- countrycode(dataset_limpio$'Location 1', origin = 'iso3c', destination = 'country.name')
+dataset_limpio$'Location 1' <-  as.factor(dataset_limpio$'Location 1')
+dataset_limpio$'Location 2' <- countrycode(dataset_limpio$'Location 2', origin = 'iso3c', destination = 'country.name')
+dataset_limpio$'Location 2' <-  as.factor(dataset_limpio$'Location 2')
+dataset_limpio$'Childern' <-  as.factor(dataset_limpio$'Childern')
+levels(dataset_limpio$'Childern') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Disabled' <-  as.factor(dataset_limpio$'Disabled')
+levels(dataset_limpio$'Disabled') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Elderly' <-  as.factor(dataset_limpio$'Elderly')
+levels(dataset_limpio$'Elderly') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'migrant' <-  as.factor(dataset_limpio$'migrant')
+levels(dataset_limpio$'migrant') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'racial/etchnial' <-  as.factor(dataset_limpio$'racial/etchnial')
+levels(dataset_limpio$'racial/etchnial') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Religious groups' <-  as.factor(dataset_limpio$'Religious groups')
+levels(dataset_limpio$'Religious groups') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Indigenous people' <-  as.factor(dataset_limpio$'Indigenous people')
+levels(dataset_limpio$'Indigenous people') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Refugees' <-  as.factor(dataset_limpio$'Refugees')
+levels(dataset_limpio$'Refugees') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Social Class' <-  as.factor(dataset_limpio$'Social Class')
+levels(dataset_limpio$'Social Class') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Men' <-  as.factor(dataset_limpio$'Men')
+levels(dataset_limpio$'Men') <- c('No mencionado','Mencionado','Algun detalle','Detallado')
+dataset_limpio$'Women' <-  as.factor(dataset_limpio$'Women')
+levels(dataset_limpio$'Women') <- c('No mencionado','mencionado','Algun detalle','Detallado')
+dataset_limpio$'LGTBI' <-  as.factor(dataset_limpio$'LGTBI')
+levels(dataset_limpio$'LGTBI') <- c('No mencionado','mencionado','Algun detalle','Detallado')
+
+
+plot(dataset_limpio$'Country',las = 2, cex.lab=0.1)
+plot(dataset_limpio$'Conflict Nature')
+plot(dataset_limpio$'Date Signed',dataset_limpio$'Agreement ID')
+```
+
+```{r}
+library(lubridate)
+plot(dataset_limpio$'Agreement stage', las = 2)
+
+barplot(prop.table(table(dataset_limpio$'Date Signed')))
+#barplot(table(year(dataset_limpio$'Date Signed')),las = 2, cex.lab=0.1)
+barplot(table(isoyear(dataset_limpio$'Date Signed')),las = 2, cex.lab=0.1)
+isoyear(dataset_limpio$'Date Signed')
+
+
+
+summary(dataset_limpio)
+
+
+
+```
+```{r}
+
+```
+
+```{r}
+barplot(table(dataset_limpio$'Agreement length'),las = 2, cex.lab=0.1)
+```
+
+```{r}
+
+write.csv(dataset_limpio,"resultados.csv", row.names = FALSE)
+```
+
